@@ -8,6 +8,8 @@ this is my discord bot. It hasn't got any name yet.
 
 - [Python](https://www.python.org/) >= 3.9
 - [Git](https://git-scm.com/)
+- [Discordpy](https://discordpy.readthedocs.io) >= 1.6.0
+- [SQLAlchemy](https://www.sqlalchemy.org/) >= 1.3.23
 
 ## Installation 
 
