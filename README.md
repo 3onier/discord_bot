@@ -2,12 +2,12 @@
 
 this is my discord bot. It hasn't got any name yet.
 
-## Devlepoment
+## Development
 
 ### Prerequisites
 
-- Python >= 3.9
-- Git
+- [Python](https://www.python.org/) >= 3.9
+- [Git](https://git-scm.com/)
 
 ## Installation 
 
@@ -19,7 +19,7 @@ git clone https://github.com/3onier/discord_bot
 sudo pip install discord sqlalchemy
 
 # migrate database
-python migrate.oy
+python migrate.py
 
 ```
 
