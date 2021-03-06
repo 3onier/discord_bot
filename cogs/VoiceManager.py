@@ -12,8 +12,16 @@ class VoiceManager(commands.Cog):
         self.bot = bot
         self._last_member = None
 
-    @commands.command("vc-add")
+    @commands.command("vc-text")
     @commands.has_permissions(manage_channels=True)
+    async def vc_handler(self, ctx, cmd="", channel_id=""):
+        if cmd == "add":
+            await self.vc_add(ctx, channel_id)
+        elif cmd == "list":
+            await self.vc_list(ctx)
+        elif cmd == "remove":
+            await self.vc_delete(ctx, channel_id)
+
     async def vc_add(self, ctx, voice_id):
         """ Adds a voice channel to managing the temporary text channel
 
@@ -32,8 +40,6 @@ class VoiceManager(commands.Cog):
         )
         await ctx.send(embed=embed, reference=ctx.message)
 
-    @commands.command("vc-list")
-    @commands.has_permissions(manage_channels=True)
     async def vc_list(self, ctx):
         """ Prints a list with all voice channels being managed
 
@@ -58,8 +64,6 @@ class VoiceManager(commands.Cog):
         )
         await ctx.send(embed=embed, reference=ctx.message)
 
-    @commands.command("vc-delete")
-    @commands.has_permissions(manage_channels=True)
     async def vc_delete(self, ctx, voice_id):
         """ Command to delete the temporary text channel
 
@@ -83,9 +87,7 @@ class VoiceManager(commands.Cog):
         )
         await ctx.send(embed=embed, reference=ctx.message)
 
-    @vc_list.error
-    @vc_add.error
-    @vc_delete.error
+    @vc_handler.error
     async def error_handler(self, ctx, error):
         """ Simple error handler nothing fancy. ugly tbh
 
