@@ -16,6 +16,13 @@ class EmojiManager(commands.Cog):
     @commands.command("avatar")
     @commands.has_permissions(manage_emojis=True)
     async def avatar_handler(self, ctx, cmd=None, parameter=None):
+        """ Manage Emojis which are made form avatars of users
+
+        :param ctx:
+        :param cmd: command like "add" or "delete"
+        :param parameter: Additional parameter (not used yet)
+        :return:
+        """
         if cmd == "add":
             await self.emoji_add(ctx)
         if cmd == "remove":
@@ -26,7 +33,7 @@ class EmojiManager(commands.Cog):
     async def emoji_add(self, ctx):
         """ Command to create or update an emoji
 
-        :param ctx: Context of an
+        :param ctx:
         :return:
         """
 
@@ -77,7 +84,7 @@ class EmojiManager(commands.Cog):
         """ Creates the emoji for given memeber
 
         :param member: member emoji should be created for
-        :return:
+        :return: [Emoji] created Emoji
         """
         # generate name
         name = member.name + member.discriminator
@@ -123,6 +130,12 @@ class EmojiManager(commands.Cog):
 
     @avatar_handler.error
     async def error_handler(self, ctx, error):
+        """ Error handler
+
+        :param ctx:
+        :param error:
+        :return:
+        """
         if error.missing_perms:
             await ctx.send(embed=default_messages.ERROR_PERMISSION_EMBED, reference=ctx.message)
         else:
