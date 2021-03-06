@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord import Embed, PermissionOverwrite
 from models.AvatarEmoji import AvatarEmoji
 
+from config import default_messages
 from config.db import session
 from config import colors
 
@@ -119,3 +120,8 @@ class EmojiManager(commands.Cog):
         # delete in database
         session.delete(emoji_entry)
         session.commit()
+
+    @avatar_handler.error
+    async def error_handler(self, ctx, error):
+        if error.missing_perms:
+            await ctx.send(embed=default_messages.ERROR_PERMISSION_EMBED, reference=ctx.message)
