@@ -125,3 +125,5 @@ class EmojiManager(commands.Cog):
     async def error_handler(self, ctx, error):
         if error.missing_perms:
             await ctx.send(embed=default_messages.ERROR_PERMISSION_EMBED, reference=ctx.message)
+        else:
+            await ctx.send(embed=default_messages.ERROR_GENERIC_EMBED, reference=ctx.message)
