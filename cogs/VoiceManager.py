@@ -4,6 +4,7 @@ from config.db import session
 from models.VoiceChannel import VoiceChannel
 
 from config import colors
+from config import default_messages
 
 
 class VoiceManager(commands.Cog):
@@ -93,13 +94,7 @@ class VoiceManager(commands.Cog):
         :return:
         """
         if error.missing_perms:
-            embed = Embed(
-                type="rich",
-                title="Error",
-                description="You are not permitted to run this command",
-                color=colors.COLOR_ERROR
-            )
-            await ctx.send(embed=embed, reference=ctx.message)
+            await ctx.send(embed=default_messages.ERROR_PERMISSION_EMBED, reference=ctx.message)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
