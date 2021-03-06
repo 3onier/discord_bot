@@ -9,3 +9,4 @@ class AvatarEmoji(Base):
     discord_id = Column(String)
     name = Column(String)
     user_id = Column(String)
+    guild_id = Column(String)

@@ -44,7 +44,8 @@ class EmojiManager(commands.Cog):
         async with ctx.typing():
             for member in ctx.message.mentions:
                 profile_picture_entry = session.query(AvatarEmoji)\
-                    .filter(AvatarEmoji.user_id == member.id).first()
+                    .filter(AvatarEmoji.user_id == member.id and AvatarEmoji.guild_id == member.guild.id)\
+                    .first()
                 if profile_picture_entry:
                     await self.delete_emoji_by_member(member)
                 emoji = await self.create_emoji_for_member(member)
@@ -103,7 +104,8 @@ class EmojiManager(commands.Cog):
         emoji_entry = AvatarEmoji(
             name=emoji.name,
             discord_id=emoji.id,
-            user_id=str(member.id)
+            user_id=str(member.id),
+            guild_id=str(member.guild.id)
         )
         session.add(emoji_entry)
         session.commit()
@@ -116,7 +118,9 @@ class EmojiManager(commands.Cog):
         :return:
         """
         # get emoji from database
-        emoji_entry = session.query(AvatarEmoji).filter(AvatarEmoji.user_id == member.id).first()
+        emoji_entry = session.query(AvatarEmoji)\
+            .filter(AvatarEmoji.user_id == member.id and AvatarEmoji.guild_id == member.guild.id)\
+            .first()
         # get emoji from discord
         emoji = utils.get(member.guild.emojis, id=int(emoji_entry.discord_id))
         if not emoji:
