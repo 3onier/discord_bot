@@ -13,6 +13,7 @@ class EmojiManager(commands.Cog):
         self._last_member = None
 
     @commands.command("avatar")
+    @commands.has_permissions(manage_emojis=True)
     async def avatar_handler(self, ctx, cmd=None, parameter=None):
         if cmd == "add":
             await self.emoji_add(ctx)
