@@ -8,3 +8,4 @@ class VoiceChannel(Base):
     id = Column(Integer, primary_key=True)
     discord_id = Column(String)
     text_id = Column(String)
+    guild_id = Column(String)

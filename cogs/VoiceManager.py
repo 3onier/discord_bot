@@ -30,7 +30,7 @@ class VoiceManager(commands.Cog):
         :param voice_id: the id of the voice channel in discord.
         :return:
         """
-        vc = VoiceChannel(discord_id=voice_id)
+        vc = VoiceChannel(discord_id=voice_id, guild_id=ctx.guild.id)
         session.add(vc)
         session.commit()
         embed = discord.Embed(
@@ -49,7 +49,8 @@ class VoiceManager(commands.Cog):
         """
         msg = ""
         # entries from database
-        vcs_entries = session.query(VoiceChannel).all()
+        vcs_entries = session.query(VoiceChannel)\
+            .filter(VoiceChannel.guild_id == ctx.guild.id).all()
         for vc_entry in vcs_entries:
             # voice channel object by discord
             vc = ctx.guild.get_channel(int(vc_entry.discord_id))
@@ -73,7 +74,9 @@ class VoiceManager(commands.Cog):
         :return:
         """
         # entry from database
-        vc_entry = session.query(VoiceChannel).filter(VoiceChannel.discord_id == voice_id).first()
+        vc_entry = session.query(VoiceChannel).filter(
+            VoiceChannel.discord_id == voice_id and VoiceChannel.guild_id == ctx.guild.id
+        ).first()
 
         # if text channel exists delete it from discord
         if vc_entry.text_id:
@@ -190,7 +193,11 @@ class VoiceManager(commands.Cog):
         :param member: member leaving channel
         :return:
         """
-        vc = session.query(VoiceChannel).filter(VoiceChannel.discord_id == voice_channel.id).first()
+        vc = session.query(VoiceChannel)\
+            .filter(
+            VoiceChannel.discord_id == voice_channel.id and VoiceChannel.guild_id == voice_channel.guild.id
+        )\
+            .first()
         if not vc:
             return
         if not vc.text_id:
