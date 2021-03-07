@@ -7,22 +7,24 @@ this is my discord bot. It hasn't got any name yet.
 ### Prerequisites
 
 - [Python](https://www.python.org/) >= 3.9
+- [pipenv](https://pypi.org/project/pipenv/) >=  2020.11.15
 - [Git](https://git-scm.com/)
 - [Discordpy](https://discordpy.readthedocs.io) >= 1.6.0
 - [SQLAlchemy](https://www.sqlalchemy.org/) >= 1.3.23
 
 ## Installation 
 
+### local
+
 ```
 # clone git repository
 git clone https://github.com/3onier/discord_bot
 
-# install requirements
-sudo pip install discord sqlalchemy
+# create virtual enviroment
+pipenv install
 
 # migrate database
-python migrate.py
-
+pipenv run migrate
 ```
 
 ## Environment variables

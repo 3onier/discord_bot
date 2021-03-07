@@ -1,0 +1,15 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+sqlalchemy = "*"
+"discord.py" = "*"
+
+[requires]
+python_version = "3.9"
+
+[scripts]
+bot = "python main.py"
+migrate = "python migrate.py"
