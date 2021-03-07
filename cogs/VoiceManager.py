@@ -1,5 +1,6 @@
 from discord.ext import commands
-from discord import Embed, PermissionOverwrite
+from discord.ext.commands import Context
+import discord
 from config.db import session
 from models.VoiceChannel import VoiceChannel
 
@@ -14,7 +15,7 @@ class VoiceManager(commands.Cog):
 
     @commands.command("vc-text")
     @commands.has_permissions(manage_channels=True)
-    async def vc_handler(self, ctx, cmd="", channel_id=""):
+    async def vc_handler(self, ctx: Context, cmd: str = "", channel_id: str = ""):
         if cmd == "add":
             await self.vc_add(ctx, channel_id)
         elif cmd == "list":
@@ -22,7 +23,7 @@ class VoiceManager(commands.Cog):
         elif cmd == "remove":
             await self.vc_delete(ctx, channel_id)
 
-    async def vc_add(self, ctx, voice_id):
+    async def vc_add(self, ctx: Context, voice_id: str):
         """ Adds a voice channel to managing the temporary text channel
 
         :param ctx: context of event.
@@ -32,7 +33,7 @@ class VoiceManager(commands.Cog):
         vc = VoiceChannel(discord_id=voice_id)
         session.add(vc)
         session.commit()
-        embed = Embed(
+        embed = discord.Embed(
             type="rich",
             title="Success",
             description="Temporary text channel has been created",
@@ -40,23 +41,23 @@ class VoiceManager(commands.Cog):
         )
         await ctx.send(embed=embed, reference=ctx.message)
 
-    async def vc_list(self, ctx):
+    async def vc_list(self, ctx: Context):
         """ Prints a list with all voice channels being managed
 
         :param ctx: context of event.
         :return:
         """
         msg = ""
-        #entries from database
+        # entries from database
         vcs_entries = session.query(VoiceChannel).all()
         for vc_entry in vcs_entries:
-            #voice channel object by discord
+            # voice channel object by discord
             vc = ctx.guild.get_channel(int(vc_entry.discord_id))
-            msg += "**"+ vc.name + ": ** \n"
+            msg += "**" + vc.name + ": ** \n"
             msg += "Id: *" + str(vc.id) + "*"
             msg += "\n\n"
 
-        embed = Embed(
+        embed = discord.Embed(
             type="rich",
             title="Voice channels",
             description=msg,
@@ -64,7 +65,7 @@ class VoiceManager(commands.Cog):
         )
         await ctx.send(embed=embed, reference=ctx.message)
 
-    async def vc_delete(self, ctx, voice_id):
+    async def vc_delete(self, ctx: Context, voice_id: str):
         """ Command to delete the temporary text channel
 
         :param ctx:
@@ -79,7 +80,7 @@ class VoiceManager(commands.Cog):
             await ctx.guild.get_channel(int(vc_entry.text_id)).delete()
         session.delete(vc_entry)
         session.commit()
-        embed = Embed(
+        embed = discord.Embed(
             type="rich",
             title="Success",
             description="Temporary text channel has been deleted",
@@ -88,7 +89,7 @@ class VoiceManager(commands.Cog):
         await ctx.send(embed=embed, reference=ctx.message)
 
     @vc_handler.error
-    async def error_handler(self, ctx, error):
+    async def error_handler(self, ctx: Context, error):
         """ Simple error handler nothing fancy. ugly tbh
 
         :param ctx:
@@ -122,7 +123,7 @@ class VoiceManager(commands.Cog):
         vc = session.query(VoiceChannel).filter(VoiceChannel.discord_id == voice_channel.id).first()
         guild = voice_channel.guild
         permissions = {
-            guild.default_role: PermissionOverwrite(read_messages=False)
+            guild.default_role: discord.PermissionOverwrite(read_messages=False)
         }
         text_channel = await voice_channel.guild.create_text_channel(
             voice_channel.name,
@@ -147,7 +148,7 @@ class VoiceManager(commands.Cog):
         session.commit()
         return
 
-    async def give_text_channel_permission(self, member, text_channel):
+    async def give_text_channel_permission(self, member: discord.Member, text_channel: discord.TextChannel):
         """ Gives member the permission to read the temporary text channel
 
         :param member: Member permission giving to
@@ -156,7 +157,7 @@ class VoiceManager(commands.Cog):
         """
         await text_channel.set_permissions(target=member, view_channel=True)
 
-    async def revoke_text_channel_permission(self, member, text_channel):
+    async def revoke_text_channel_permission(self, member: discord.Member, text_channel: discord.TextChannel):
         """ Revokes member the permission to read the temporary text channel
 
         :param member: Member permission revoking of
@@ -165,7 +166,7 @@ class VoiceManager(commands.Cog):
         """
         await text_channel.set_permissions(target=member, view_channel=False)
 
-    async def voice_join(self, voice_channel, member):
+    async def voice_join(self, voice_channel: discord.VoiceChannel, member: discord.Member):
         """ Managing when member joins a voice channel
 
         :param voice_channel: channel member joined
@@ -182,7 +183,7 @@ class VoiceManager(commands.Cog):
 
         await self.give_text_channel_permission(member, text_channel)
 
-    async def voice_leave(self, voice_channel, member):
+    async def voice_leave(self, voice_channel: discord.VoiceChannel, member: discord.Member):
         """ Managing when member leaves a channel
 
         :param voice_channel: channel member joined left

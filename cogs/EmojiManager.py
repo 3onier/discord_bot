@@ -1,6 +1,6 @@
-from discord import utils, Emoji
+import discord
 from discord.ext import commands
-from discord import Embed, PermissionOverwrite
+from discord.ext.commands import Context
 from models.AvatarEmoji import AvatarEmoji
 
 from config import default_messages
@@ -15,7 +15,7 @@ class EmojiManager(commands.Cog):
 
     @commands.command("avatar")
     @commands.has_permissions(manage_emojis=True)
-    async def avatar_handler(self, ctx, cmd=None, parameter=None):
+    async def avatar_handler(self, ctx: Context, cmd: str = None, parameter: str = None):
         """ Manage Emojis which are made form avatars of users
 
         :param ctx:
@@ -30,7 +30,7 @@ class EmojiManager(commands.Cog):
         if cmd == "list":
             pass
 
-    async def emoji_add(self, ctx):
+    async def emoji_add(self, ctx: Context):
         """ Command to create or update an emoji
 
         :param ctx:
@@ -51,7 +51,7 @@ class EmojiManager(commands.Cog):
                 emojis.append(emoji)
 
             # create success message
-            msg = Embed(
+            msg = discord.Embed(
                 type="rich",
                 title="Sucess",
                 color=colors.COLOR_SUCCESS,
@@ -62,7 +62,7 @@ class EmojiManager(commands.Cog):
                 if emoji:
                     await success_msg.add_reaction(e)
 
-    async def delete_emoji(self, ctx):
+    async def delete_emoji(self, ctx: Context):
         """ Deletes emojis for members
 
         :param ctx:
@@ -72,7 +72,7 @@ class EmojiManager(commands.Cog):
             await self.delete_emoji_by_member(member)
 
         # create success message
-        msg = Embed(
+        msg = discord.Embed(
             type="rich",
             title="Sucess",
             color=colors.COLOR_SUCCESS,
@@ -80,11 +80,11 @@ class EmojiManager(commands.Cog):
         )
         await ctx.send(embed=msg)
 
-    async def create_emoji_for_member(self, member):
-        """ Creates the emoji for given memeber
+    async def create_emoji_for_member(self, member: discord.Member) -> discord.Emoji:
+        """ Creates the emoji for given member
 
         :param member: member emoji should be created for
-        :return: [Emoji] created Emoji
+        :return: [discord.Emoji] created Emoji
         """
         # generate name
         name = member.name + member.discriminator
@@ -97,7 +97,7 @@ class EmojiManager(commands.Cog):
 
         # if failed return
         if not emoji:
-            return False
+            return None
 
         # create entry for database
         emoji_entry = AvatarEmoji(
@@ -109,7 +109,7 @@ class EmojiManager(commands.Cog):
         session.commit()
         return emoji
 
-    async def delete_emoji_by_member(self, member):
+    async def delete_emoji_by_member(self, member: discord.Member):
         """ deletes an Emoji for given member
 
         :param member:
@@ -118,7 +118,7 @@ class EmojiManager(commands.Cog):
         # get emoji from database
         emoji_entry = session.query(AvatarEmoji).filter(AvatarEmoji.user_id == member.id).first()
         # get emoji from discord
-        emoji = utils.get(member.guild.emojis, id=int(emoji_entry.discord_id))
+        emoji = discord.utils.get(member.guild.emojis, id=int(emoji_entry.discord_id))
         if not emoji:
             return False
         # delete emoji on discord
@@ -129,7 +129,7 @@ class EmojiManager(commands.Cog):
         session.commit()
 
     @avatar_handler.error
-    async def error_handler(self, ctx, error):
+    async def error_handler(self, ctx: Context, error):
         """ Error handler
 
         :param ctx:
