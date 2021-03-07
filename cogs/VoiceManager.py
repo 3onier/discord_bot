@@ -99,8 +99,10 @@ class VoiceManager(commands.Cog):
         :param error:
         :return:
         """
-        if error.missing_perms:
+        if hasattr(error, 'missing_perms'):
             await ctx.send(embed=default_messages.ERROR_PERMISSION_EMBED, reference=ctx.message)
+        else:
+            await ctx.send(embed=default_messages.ERROR_GENERIC_EMBED, reference=ctx.message)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):

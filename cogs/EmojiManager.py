@@ -60,7 +60,7 @@ class EmojiManager(commands.Cog):
             )
             success_msg = await ctx.send(embed=msg)
             for e in emojis:
-                if emoji:
+                if e:
                     await success_msg.add_reaction(e)
 
     async def delete_emoji(self, ctx: Context):
@@ -140,7 +140,7 @@ class EmojiManager(commands.Cog):
         :param error:
         :return:
         """
-        if error.missing_perms:
+        if hasattr(error, 'missing_perms'):
             await ctx.send(embed=default_messages.ERROR_PERMISSION_EMBED, reference=ctx.message)
         else:
             await ctx.send(embed=default_messages.ERROR_GENERIC_EMBED, reference=ctx.message)
