@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  discord_bot:
+    container_name: discord_bot
+    image: 3onier/discord_bot
+    tty: true
+    restart: always
+    environment:
+      TOKEN: "<TOKEN>"
+      SQLITE_PATH: "../data/data.db"
+    volumes:
+      - 'data:/bot/data'
+volumes:
+  data: {}
