@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  discord_bot:
+    container_name: discord_bot
+    build: .
+    tty: true
+    environment:
+      TOKEN: "<TOKEN>"
+      SQLITE_PATH: "data/data.db"
+    volumes:
+      - 'data:/application/data'
+volumes:
+  data: {}
