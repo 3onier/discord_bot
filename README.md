@@ -27,7 +27,7 @@ nano Dockerfile
 nano docker-compose.yml
 
 # build ducker image
-sudo docker build . 
+sudo docker build . -t 3onier/discord_bot
 
 # run cointainer
 docker-compose up -d
