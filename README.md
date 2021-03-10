@@ -59,9 +59,3 @@ pipenv run migrate
 |DB_NAME      |Name of database | discord_bot   |
 |DB_USER      |MySQL user|    |
 |DB_PASSWORD      |Password for the MySQL user |    |
-
-DB_HOST: ""
-      DB_PORT: ""
-      DB_NAME: ""
-      DB_USER: ""
-      DB_PASSWORD: ""
