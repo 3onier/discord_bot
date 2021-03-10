@@ -7,7 +7,11 @@ services:
     restart: always
     environment:
       TOKEN: "<TOKEN>"
-      SQLITE_PATH: "../data/data.db"
+      DB_HOST: ""
+      DB_PORT: "3306"
+      DB_NAME: "discord_bot"
+      DB_USER: ""
+      DB_PASSWORD: ""
     volumes:
       - 'data:/bot/data'
 volumes:

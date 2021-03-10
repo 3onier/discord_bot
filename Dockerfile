@@ -25,6 +25,4 @@ RUN python -m pip install -r requirements.txt
 
 WORKDIR /bot/bin/
 
-RUN python migrate.py
-
 CMD python main.py

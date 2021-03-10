@@ -54,4 +54,14 @@ pipenv run migrate
 | Name      | Description | Default |
 |:----------|:------------|:--------|
 |TOKEN      |Token for the Discord bot API|     |
-|SQLITE_PATH      |Path to sqlite file| "../data/data.db"     |
+|DB_HOST      |Host address of MySQL server|      |
+|DB_PORT      |Port of MySQL server| 3306    |
+|DB_NAME      |Name of database | discord_bot   |
+|DB_USER      |MySQL user|    |
+|DB_PASSWORD      |Password for the MySQL user |    |
+
+DB_HOST: ""
+      DB_PORT: ""
+      DB_NAME: ""
+      DB_USER: ""
+      DB_PASSWORD: ""

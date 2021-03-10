@@ -6,7 +6,7 @@ class AvatarEmoji(Base):
     __tablename__ = 'profile_emoji'
 
     id = Column(Integer, primary_key=True)
-    discord_id = Column(String)
-    name = Column(String)
-    user_id = Column(String)
-    guild_id = Column(String)
+    discord_id = Column(String(255))
+    name = Column(String(255))
+    user_id = Column(String(255))
+    guild_id = Column(String(255))
