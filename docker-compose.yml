@@ -14,5 +14,20 @@ services:
       DB_PASSWORD: ""
     volumes:
       - 'data:/bot/data'
+  bot_maria_db:
+    container_name: bot_maria_db
+    image: mariadb:latest
+    tty: true
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '<MYSQL root password>'
+      MYSQL_DATABASE: 'discord_bot'
+      MYSQL_USER: ''
+      MYSQL_PASSWORD: ''
+    volumes:
+      - 'database_configs:/etc/mysql/conf.d'
+      - 'database_files:/var/lib/mysql'
 volumes:
   data: {}
+  database_configs: {}
+  database_files: {}
