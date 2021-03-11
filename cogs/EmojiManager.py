@@ -8,6 +8,27 @@ from config.db import session
 from config import colors
 
 
+def help_message(command: str = "") -> discord.Embed:
+    if command == "add":
+        output = discord.Embed(
+            title="Help for \"avatar add\" command",
+            description="avatar add <Ping users here>",
+            color=colors.COLOR_GENERIC
+        )
+    elif command == "remove":
+        output = discord.Embed(
+            title="Help for \"avatar remove\" command",
+            description="avatar remove <Ping users here>",
+            color=colors.COLOR_GENERIC
+        )
+    else:
+        output = discord.Embed(
+            title="Help for \"avatar\" command",
+            description="avatar add/remove",
+            color=colors.COLOR_GENERIC
+        )
+    return output
+
 class EmojiManager(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

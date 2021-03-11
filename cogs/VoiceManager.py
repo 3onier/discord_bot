@@ -8,6 +8,27 @@ from config import colors
 from config import default_messages
 
 
+def help_message(command: str = "") -> discord.Embed:
+    if command == "add":
+        output = discord.Embed(
+            title="Help for \"vc-text add\" command",
+            description="vc-text add <Voice channel id>",
+            color=colors.COLOR_GENERIC
+        )
+    elif command == "remove":
+        output = discord.Embed(
+            title="Help for \"vc-text remove\" command",
+            description="vc-text remove <Voice channel id>",
+            color=colors.COLOR_GENERIC
+        )
+    else:
+        output = discord.Embed(
+            title="Help for \"vc-text\" command",
+            description="vc-text add/remove/list",
+            color=colors.COLOR_GENERIC
+        )
+    return output
+
 class VoiceManager(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -16,12 +37,15 @@ class VoiceManager(commands.Cog):
     @commands.command("vc-text")
     @commands.has_permissions(manage_channels=True)
     async def vc_handler(self, ctx: Context, cmd: str = "", channel_id: str = ""):
-        if cmd == "add":
-            await self.vc_add(ctx, channel_id)
-        elif cmd == "list":
-            await self.vc_list(ctx)
-        elif cmd == "remove":
-            await self.vc_delete(ctx, channel_id)
+        async with ctx.typing():
+            if cmd == "add":
+                await self.vc_add(ctx, channel_id)
+            elif cmd == "list":
+                await self.vc_list(ctx)
+            elif cmd == "remove":
+                await self.vc_delete(ctx, channel_id)
+            else:
+                await ctx.send(embed=help_message())
 
     async def vc_add(self, ctx: Context, voice_id: str):
         """ Adds a voice channel to managing the temporary text channel
@@ -118,7 +142,7 @@ class VoiceManager(commands.Cog):
         if before.channel:
             await self.voice_leave(before.channel, member)
 
-    async def create_text_channel(self, voice_channel, member):
+    async def create_text_channel(self, voice_channel, member) -> discord.TextChannel:
         """ Creates a temporary text channel
 
         :param voice_channel: voice channel text channel should be created for
