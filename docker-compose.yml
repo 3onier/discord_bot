@@ -5,6 +5,8 @@ services:
     image: 3onier/discord_bot
     tty: true
     restart: always
+    depends_on:
+      - bot_maria_db
     environment:
       TOKEN: "<TOKEN>"
       DB_HOST: ""
